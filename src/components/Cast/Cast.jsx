@@ -11,7 +11,7 @@ export const Cast = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { movieId } = useParams();
-  const defaultImg = 'https://via.placeholder.com/180x300?text=No+Image';
+  const defaultImg = 'https://img.freepik.com/free-vector/cinema-concept_1284-12759.jpg?w=2000';
 
   useEffect(() => {
     if (!movieId) {
