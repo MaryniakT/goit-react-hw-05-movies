@@ -1,53 +1,38 @@
-import PropTypes from 'prop-types';
-import { Image, ItemInfo, Section, Text, Title, Wrapper } from './MoviesInfo.styled';
+import { Container, Wrapper } from './MoviesInfo.styled';
 
 export const MoviesInfo = ({
-  title,
-  release_date,
-  overview,
-  vote_average,
-  genres = [],
-  poster_path,
+  item: {
+    original_title,
+    release_date,
+    poster_path,
+    genres,
+    overview,
+    vote_average,
+  },
 }) => {
-  const data = new Date(release_date).getFullYear();
-  const defaultImg = 'https://img.freepik.com/free-vector/cinema-concept_1284-12759.jpg?w=2000';
+  const releaseDate = new Date(release_date).getFullYear();
+
+  const image = poster_path
+    ? `https://image.tmdb.org/t/p/w400/${poster_path}`
+    : '';
+
+  const score = vote_average
+    ? `${(vote_average * 10).toFixed(0)}%`
+    : 'No Score';
+
   return (
-    <Section>
-      <Image
-        src={poster_path ? 'https://image.tmdb.org/t/p/w500' + poster_path : defaultImg}
-        alt="poster"
-        loading="lazy"
-      />
+    <Container>
+      <img src={image} alt={original_title} width="320" />
       <Wrapper>
-        <h2 style={{ marginBottom: '20px' }}>
-          {title} ({data})
-        </h2>
-        <Text>
-          <i>User Score: </i>
-          {Math.round(vote_average * 10)} %
-        </Text>
-        <Title>Overview</Title>
-        <Text>{overview}</Text>
-        <Title>Genres</Title>
-        <ul>
-          {genres.map(genre => (
-            <ItemInfo key={genre.id}>{genre.name}</ItemInfo>
-          ))}
-        </ul>
+        <h1>
+          {original_title} ({releaseDate})
+        </h1>
+        <p>User score: {score}</p>
+        <h2>Overview</h2>
+        <p>{overview}</p>
+        <h2>Genres</h2>
+        <p>{genres.map(genre => genre.name).join(', ')}</p>
       </Wrapper>
-    </Section>
+    </Container>
   );
-};
-MoviesInfo.propTypes = {
-  title: PropTypes.string.isRequired,
-  release_date: PropTypes.string.isRequired,
-  overview: PropTypes.string.isRequired,
-  vote_average: PropTypes.number.isRequired,
-  genres: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  poster_path: PropTypes.string,
 };

@@ -1,62 +1,51 @@
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { Loader } from 'components/Loader/Loader';
 import { MoviesInfo } from 'components/MoviesInfo/MoviesInfo';
-import { AiOutlineArrowLeft } from 'react-icons/ai';
-import { Button, Section } from 'components/App/App.styled';
-import { Item } from 'components/MoviesList/MoviesList.styled';
-import { Text } from 'components/MoviesInfo/MoviesInfo.styled';
-
+import { Suspense, useEffect, useRef, useState } from 'react';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { getMovieDetails } from 'service/movies-api';
+import { BackLink, Container } from 'pages/MovieDetails.styled';
+import Loader from 'components/Loader/Loader';
 
-export const MovieDetails = () => {
-  const [movieInfo, setMovieInfo] = useState(null);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const { movieId } = useParams();
+const MovieDetails = () => {
+  const [selectedMovie, setSelectedMovie] = useState();
+  const [isLoading, setIsLoading] = useState({});
   const location = useLocation();
-  const goBackLink = location.state?.from ?? '/';
+  const backLinkLocationRef = useRef(location.state?.from ?? '/movies');
+  const { movieId } = useParams();
 
   useEffect(() => {
-    if (!movieId) {
-      return;
-    }
-    setIsLoading(true);
-    getMovieDetails(movieId)
-      .then(response => {
-        setMovieInfo(response);
-      })
-      .catch(error => {
-        setError(error.message);
-      })
-      .finally(() => {
+    const getMovie = async movieId => {
+      try {
+        setIsLoading(true);
+        const movieDetails = await getMovieDetails(movieId);
+        setSelectedMovie(movieDetails);
+      } catch (error) {
+        console.log(error);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+
+    getMovie(movieId);
   }, [movieId]);
 
   return (
-    <main>
-      {isLoading && <Loader />}
-      <Button>
-        <Link to={goBackLink}>
-          <AiOutlineArrowLeft />
-          Go back
-        </Link>
-      </Button>
-      {movieInfo && <MoviesInfo {...movieInfo} />}
-      <Section>
-        <Text>Additional information</Text>
-        <ul>
-          <Item>
-            <Link to="cast">Cast</Link>
-          </Item>
-          <Item>
-            <Link to="reviews">Reviews</Link>
-          </Item>
-        </ul>
-      </Section>
-      <Outlet />
-      {error && <h2>{error}</h2>}
-    </main>
+    <Container>
+      <BackLink to={backLinkLocationRef.current}>Back to Movies</BackLink>
+      {isLoading ? <p>LOADING...</p> : <MoviesInfo item={selectedMovie} />}
+
+      <ul>
+        <li>
+          <Link to="cast">Watch casting</Link>
+        </li>
+        <li>
+          <Link to="reviews">Watch reviews</Link>
+        </li>
+      </ul>
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
+    </Container>
   );
 };
+
+export default MovieDetails;

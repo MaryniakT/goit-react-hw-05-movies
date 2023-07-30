@@ -1,40 +1,21 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { toast } from 'react-toastify';
-import { ButtonForm, InputForm } from './SearchBox.styled';
+
+import { Button, Input,SearchBarStyle } from './SearchBox.styled';
 
 export const SearchBox = ({ onSubmit }) => {
-  const [query, setQuery] = useState('');
-
-  const handleChange = e => {
-    setQuery(e.target.value);
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (!query) {
-      toast.error("Sorry, the search string can't be empty. Please try again.");
-      return;
-    }
-    onSubmit(query);
-  };
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <InputForm
-          name="query"
+    <SearchBarStyle>
+      <form action="" onSubmit={onSubmit}>
+        <Input
           type="text"
-          autoComplete="off"
+          name="search"
+          placeholder="Enter movie name"
           autoFocus
-          placeholder="Search movie"
-          onChange={handleChange}
-        ></InputForm>
-        <ButtonForm type="submit">Search</ButtonForm>
+          autoComplete="off"
+        />
+        <Button type="submit" aria-label="Search movies">
+          Search
+        </Button>
       </form>
-    </div>
+    </SearchBarStyle>
   );
-};
-SearchBox.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

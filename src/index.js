@@ -1,19 +1,44 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import 'modern-normalize';
-import 'react-toastify/dist/ReactToastify.css';
-import { Global, ThemeProvider } from '@emotion/react';
 import { App } from 'components/App/App';
-import { GlobalStyles, theme } from 'styles';
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyles } from 'GlobalStyles';
+
+const theme = {
+   colors: {
+        white: '#ffffff',
+        pink: '#FFC0CB',
+        dark: '#C71585',
+        grey: '#FF1493',
+        red: '#df1b1b',
+        yellow: '#ca744f',
+        mainBackground: ['linear-gradient(to bottom, #ffc9f8,  #e8c3e2)'],
+        tagBackground: ['linear-gradient(to bottom, #ff94df, #b83cd1 )'],
+    },
+  fontSizes: {
+    small: '14px',
+    medium: '18px',
+    large: '22px',
+  },
+  spacing: value => `${4 * value}px`,
+  shadows: {
+    small: '0 5px 7px -1px rgba(51, 51, 51, 0.23)',
+    regular: '0px 4px 10px 4px #9e9e9e',
+    medium: '0 9px 47px 11px rgba(51, 51, 51, 0.18);',
+  },
+  animation: {
+    cubicBezier: '0.25s cubic-bezier(0.7, 0.98, 0.86, 0.98)',
+  },
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/goit-react-hw-05-movies">
-      <ThemeProvider theme={theme}>
-        <Global styles={GlobalStyles} />
+    <ThemeProvider theme={theme}>
+      <BrowserRouter basename="/goit-react-hw-05-movies">
         <App />
-      </ThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ThemeProvider>
+    <GlobalStyles />
   </React.StrictMode>
 );

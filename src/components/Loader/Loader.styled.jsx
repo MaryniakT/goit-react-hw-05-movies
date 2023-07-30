@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Wrapper = styled.div`
+export const LoaderContainer  = styled.div`
   position: fixed;
   top: 0;
   left: 0;

@@ -1,53 +1,59 @@
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Loader } from 'components/Loader/Loader';
+import { useState, useEffect } from 'react';
+import { getMoviesBySearch } from '../service/movies-api';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { MoviesList } from 'components/MoviesList/MoviesList';
 import { SearchBox } from 'components/SearchBox/SearchBox';
-import { ToastContainer, toast } from 'react-toastify';
+import Loader from 'components/Loader/Loader';
 
-import { getSearchMovies } from 'service/movies-api';
-
-export const Movies = () => {
+const Movies = () => {
   const [movies, setMovies] = useState([]);
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('search');
 
-  useEffect(() => {
-    const query = searchParams.get('query') ?? '';
-    if (!query) {
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    if (search === '') {
+      alert('Please enter movie name');
       return;
     }
-    setIsLoading(true);
-    getSearchMovies({ query })
-      .then(response => {
-        if (response.results.length === 0) {
-          toast.error(`Sorry, no movie from ${query}!`);
-        } else {
-          setMovies(response.results);
-        }
-      })
-      .catch(error => {
-        setError(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [searchParams]);
 
-  const handleSubmit = query => {
-    const nextParams = query !== '' ? { query } : {};
-    setSearchParams(nextParams);
-    setMovies([]);
+    setSearchParams({ search: e.target.elements.search.value });
+    e.target.reset();
   };
+
+  useEffect(() => {
+    if (!search) return;
+
+    const getMovies = async name => {
+      try {
+        setIsLoading(true);
+        const movies = await getMoviesBySearch(name);
+        setMovies([...movies]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getMovies(search);
+  }, [search]);
 
   return (
     <main>
-      <ToastContainer autoClose={3000} />
       <SearchBox onSubmit={handleSubmit} />
-      {isLoading && <Loader />}
-      <MoviesList movies={movies} />
-      {error && <h2>{error}</h2>}
+      {isLoading ? (
+        <div>
+          <Loader />
+        </div>
+      ) : (
+        <MoviesList movies={movies} state={{ from: location }} />
+      )}
     </main>
   );
 };
+
+export default Movies;

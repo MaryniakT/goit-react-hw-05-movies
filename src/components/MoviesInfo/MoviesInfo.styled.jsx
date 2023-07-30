@@ -1,49 +1,25 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
-export const Section = styled.section`
+export const Container = styled.div`
+  width: 300px;
   display: flex;
-  padding-bottom: 20px;
-  position: relative;
-  &:after {
-    display: block;
-    content: '';
+  flex-direction: column;
+  padding: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border: 1px solid ${p => p.theme.colors.lightGreen};
+  border-radius: 4px;
+  box-shadow: 0px 5px 10px 3px rgba(0, 0, 0, 0.2);
 
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    transform: translateX(-50%);
-
-    width: 100%;
-    height: 1px;
-    border-radius: 1px;
-    background-color: ${props => props.theme.colors.dark};
-  }
-`;
-
-export const Image = styled.img`
-  width: 200px;
-  border-radius: 8px;
-  box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
-  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  &:hover {
-    transform: scale(1.03);
+  @media screen and (min-width: 768px) {
+    width: 600px;
+    flex-direction: row;
   }
 `;
 
 export const Wrapper = styled.div`
-  padding-top: 20px;
   margin-left: 20px;
-`;
-
-export const ItemInfo = styled.li`
-  display: inline-block;
-  margin-right: 8px;
-`;
-
-export const Title = styled.h3`
-  margin-bottom: 20px;
-`;
-
-export const Text = styled.p`
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;

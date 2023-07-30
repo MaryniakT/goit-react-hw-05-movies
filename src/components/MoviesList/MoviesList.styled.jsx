@@ -1,17 +1,8 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
-export const Item = styled.li`
-  width: max-content;
-  white-space: nowrap;
-  font-style: italic;
-  &:not(:last-child) {
-    margin-bottom: 5px;
-  }
-  color: ${props => props.theme.colors.blue};
-  &:hover,
-  &:focus {
-    transform: scale(1.05);
-    box-shadow: 0px 2px 10px 2px ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.yellow};
-  }
+export const MoviesInfo = styled.li`
+  margin-left: 10px;
+  margin-bottom: 15px;
+  color: #212121;
+  font-weight: 500;
 `;

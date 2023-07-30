@@ -1,32 +1,42 @@
-import { useState, useEffect } from 'react';
-import { getDayTrendingMovies } from 'service/movies-api';
 import { MoviesList } from 'components/MoviesList/MoviesList';
-import { Loader } from 'components/Loader/Loader';
+import { useState, useEffect } from 'react';
+import { getTrendingMovies } from '../service/movies-api';
+import { useLocation } from 'react-router-dom';
+import Loader from 'components/Loader/Loader';
 
-export const Home = () => {
+const Home = () => {
   const [movies, setMovies] = useState([]);
-  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const location = useLocation();
+  // console.log(location);
+
   useEffect(() => {
-    setIsLoading(true);
-    getDayTrendingMovies()
-      .then(response => {
-        setMovies(response.results);
-      })
-      .catch(error => {
-        setError(error.message);
-      })
-      .finally(() => {
+    const getMovies = async () => {
+      try {
+        setIsLoading(true);
+        const movies = await getTrendingMovies();
+        setMovies([...movies]);
+      } catch (error) {
+        console.log(error);
+      } finally {
         setIsLoading(false);
-      });
+      }
+    };
+
+    getMovies();
   }, []);
   return (
     <main>
-      {isLoading && <Loader />}
-      <h1 style={{ marginBottom: '20px' }}>Trending today</h1>
-      <MoviesList movies={movies} />
-      {error && <h2>{error}</h2>}
+      {isLoading ? (
+        <div>
+          <Loader />
+        </div>
+      ) : (
+        <MoviesList movies={movies} state={{ from: location }} />
+      )}
     </main>
   );
 };
+
+export default Home;

@@ -1,10 +1,23 @@
-import { ColorRing } from 'react-loader-spinner';
-import { Wrapper } from './Loader.styled';
+import { ThreeCircles } from 'react-loader-spinner';
+import { LoaderContainer } from './Loader.styled';
 
-export const Loader = () => {
+const Loader = () => {
   return (
-    <Wrapper>
-      <ColorRing />
-    </Wrapper>
+    <LoaderContainer>
+      <ThreeCircles
+        height="80"
+        width="80"
+        color="tomato"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+        ariaLabel="three-circles-rotating"
+        outerCircleColor=""
+        innerCircleColor=""
+        middleCircleColor=""
+      />
+    </LoaderContainer>
   );
 };
+
+export default Loader;

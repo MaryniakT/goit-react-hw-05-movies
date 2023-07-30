@@ -1,40 +1,56 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
-export const ButtonForm = styled.button`
-  margin-left: 10px;
-  padding: 6px;
-  border-radius: 4px;
-  box-shadow: ${props => props.theme.shadows.medium};
-  color: ${props => props.theme.colors.white};
-  transition-property: transform, box-shadow, background-color;
-  transition-duration: 0.25s;
-  transition-timing-function: ${props => props.theme.animation.cubicBezier};
+export const SearchBarStyle = styled.div`
+  margin-top: 30px;
+  margin-left: 30px;
+`;
 
-  background-color: ${props => props.theme.colors.blue};
-  font-weight: 600;
+export const Form = styled.form`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+`;
 
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 2px 10px 2px ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.yellow};
-    background-color: ${props => props.theme.colors.white};
+export const Input = styled.input`
+  width: 200px;
+  height: 40px;
+  font-family: inherit;
+  font-size: 20px;
+  outline: none;
+  padding: 10px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border-radius: 3px;
+
+  ::placeholder {
+    font-family: inherit;
+    font-size: 18px;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 500px;
+    margin-bottom: 0;
   }
 `;
 
-export const InputForm = styled.input`
-  display: inline-block;
-  width: 300px;
-  margin-bottom: 20px;
-  border-radius: 4px;
-  font: inherit;
-  font-size: 20px;
-  border: none;
-  outline: none;
-  padding: 6px;
-  box-shadow: ${props => props.theme.shadows.medium};
+export const Button = styled.button`
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: rgb(48, 21, 168);
+  padding: 8px;
+  height: 40px;
+  border: 0;
+  border-radius: 3px;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 
-  &::placeholder {
-    font: inherit;
-    font-size: ${props => props.theme.fontSizes.medium};
+  :hover {
+    opacity: 1;
+    color:  #fff;
+    background-color: rgb(48, 21, 168);
   }
 `;
