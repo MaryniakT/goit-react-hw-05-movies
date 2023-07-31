@@ -45,7 +45,7 @@ a {
   color: #212121;
 
   :hover, :focus {
-    color: #2b1375
+    color: #2b1375;
   }
 }
 
